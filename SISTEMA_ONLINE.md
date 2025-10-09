@@ -1,8 +1,8 @@
 # 🚀 Sistema Online - Configuração Final
 
 ## ✅ **URLs do Seu Sistema:**
-- **🛒 Loja**: https://sistema-entrega.netlify.app/
-- **👨‍💼 Admin**: https://sistema-entrega.netlify.app/admin/login
+- **🛒 Loja**: https://sistemadelivery.netlify.app/
+- **👨‍💼 Admin**: https://sistemadelivery.netlify.app/admin/login
 - **🔧 API**: https://delivery-api-zdnu.onrender.com
 
 ---
@@ -47,7 +47,7 @@ NODE_ENV=production
 MONGODB_URI=mongodb+srv://alex32:SUA_SENHA@delivery-admin.gzswapr.mongodb.net/?retryWrites=true&w=majority&appName=delivery-admin
 JWT_SECRET=delivery_jwt_secreto_2024_altere_isso
 WHATSAPP_NUMBER=5531983218662
-FRONTEND_URL=https://sistema-entrega.netlify.app
+FRONTEND_URL=https://sistemadelivery.netlify.app
 ```
 
 **⚠️ IMPORTANTE**: Substitua `SUA_SENHA` pela senha real do MongoDB Atlas!
@@ -61,9 +61,9 @@ FRONTEND_URL=https://sistema-entrega.netlify.app
 - Deve retornar: `{"status":"OK","message":"API funcionando!"}`
 
 ### **2. Testar Frontend:**
-- Acesse: https://sistema-entrega.netlify.app
+- Acesse: https://sistemadelivery.netlify.app
 - Deve carregar a página do delivery
-- Teste o admin: https://sistema-entrega.netlify.app/admin/login
+- Teste o admin: https://sistemadelivery.netlify.app/admin/login
 
 ### **3. Testar Login Admin:**
 - **Usuário**: `admin`

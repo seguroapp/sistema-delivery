@@ -127,7 +127,9 @@ const AdminDashboard = () => {
 
   const handleStatusChange = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/admin/pedidos/${selectedPedido._id}/status`, {
+      const token = localStorage.getItem('adminToken');
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${apiUrl}/api/admin/pedidos/${selectedPedido._id}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'

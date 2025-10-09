@@ -65,7 +65,8 @@ const AcompanharPedido = () => {
     try {
       // Se for busca por número, usar a rota direta
       if (searchType === 'numero' || numero) {
-        const response = await fetch(`http://localhost:5000/api/tracking/${termoBusca}`);
+        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+        const response = await fetch(`${apiUrl}/api/tracking/${termoBusca}`);
         const data = await response.json();
 
         if (data.success) {
@@ -75,7 +76,8 @@ const AcompanharPedido = () => {
         }
       } else {
         // Busca por dados do cliente
-        const response = await fetch('http://localhost:5000/api/tracking/buscar', {
+        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+        const response = await fetch(`${apiUrl}/api/tracking/buscar`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
