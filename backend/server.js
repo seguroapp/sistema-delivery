@@ -1,28 +1,28 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const connectDB = require('./config/database');
+// const connectDB = require('./config/database'); // Removido para usar só mock
 const { logger, errorHandler } = require('./middleware/auth');
 
 // Carregar variáveis de ambiente
 dotenv.config();
 
-// Conectar ao banco de dados
-connectDB();
+// Conectar ao banco de dados - DESABILITADO PARA USAR MOCK
+// connectDB();
 
-// Inicializar admin padrão (apenas em produção)
-if (process.env.NODE_ENV === 'production') {
-  const { criarAdminPadrao } = require('./criar-admin');
-  
-  // Executar após 5 segundos para garantir que o MongoDB conectou
-  setTimeout(async () => {
-    try {
-      await criarAdminPadrao();
-    } catch (error) {
-      console.log('Admin já existe ou erro na criação:', error.message);
-    }
-  }, 5000);
-}
+// Inicializar admin padrão (apenas em produção) - DESABILITADO
+// if (process.env.NODE_ENV === 'production') {
+//   const { criarAdminPadrao } = require('./criar-admin');
+//   
+//   // Executar após 5 segundos para garantir que o MongoDB conectou
+//   setTimeout(async () => {
+//     try {
+//       await criarAdminPadrao();
+//     } catch (error) {
+//       console.log('Admin já existe ou erro na criação:', error.message);
+//     }
+//   }, 5000);
+// }
 
 const app = express();
 
@@ -75,11 +75,12 @@ app.get('/api/test', (req, res) => {
   });
 });
 
-// Rotas da API
-app.use('/api/auth', require('./routes/auth'));
+// Rotas da API (usando versões mock para estabilidade)
+app.use('/api/auth', require('./routes/auth-mock'));
 app.use('/api/cardapio', require('./routes/cardapio-mock'));
-app.use('/api/clientes', require('./routes/clientes'));
-app.use('/api/pedidos', require('./routes/pedidos'));
+app.use('/api/clientes', require('./routes/clientes-mock'));
+app.use('/api/pedidos', require('./routes/pedidos-mock'));
+app.use('/api/tracking', require('./routes/tracking-mock'));
 
 // Rota para servir arquivos estáticos (futuramente para uploads de imagens)
 app.use('/uploads', express.static('uploads'));

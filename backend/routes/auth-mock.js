@@ -24,10 +24,13 @@ const gerarToken = (id) => {
 // POST /api/auth/login - Login do admin
 router.post('/login', (req, res) => {
   try {
-    const { email, password } = req.body; // Mudança: usar 'password' em vez de 'senha'
+    const { email, senha, password } = req.body; // Aceitar ambos os formatos
+    const senhaFinal = senha || password; // Usar senha se disponível, senão password
+
+    console.log('🔍 Login attempt:', { email, senhaRecebida: senhaFinal });
 
     // Validação de entrada
-    if (!email || !password) {
+    if (!email || !senhaFinal) {
       return res.status(400).json({
         success: false,
         message: 'Email e senha são obrigatórios'
@@ -35,8 +38,10 @@ router.post('/login', (req, res) => {
     }
 
     // Verificar credenciais mock
-    if (email === adminMock.email && password === adminMock.senha) {
+    if (email === adminMock.email && senhaFinal === adminMock.senha) {
       const token = gerarToken(adminMock._id);
+      
+      console.log('✅ Login successful for:', email);
       
       res.json({
         success: true,
@@ -50,6 +55,13 @@ router.post('/login', (req, res) => {
         }
       });
     } else {
+      console.log('❌ Login failed:', { 
+        emailReceived: email, 
+        expectedEmail: adminMock.email,
+        senhaReceived: senhaFinal,
+        expectedSenha: adminMock.senha 
+      });
+      
       res.status(401).json({
         success: false,
         message: 'Credenciais inválidas'
