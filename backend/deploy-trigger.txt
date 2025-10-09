@@ -1,1 +1,1 @@
-Deploy trigger para forçar rebuild no Render - $(Get-Date)
+Deploy trigger para forçar rebuild no Render - 10/09/2025 15:30 - Rotas completas
