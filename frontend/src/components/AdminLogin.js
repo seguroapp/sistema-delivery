@@ -19,15 +19,6 @@ const AdminLogin = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Handlers otimizados para evitar perda de foco
-  const handleEmailChange = useCallback((e) => {
-    setEmail(e.target.value);
-  }, []);
-
-  const handlePasswordChange = useCallback((e) => {
-    setPassword(e.target.value);
-  }, []);
-
   // Verificar se já está logado
   useEffect(() => {
     const token = localStorage.getItem('adminToken');
@@ -55,7 +46,7 @@ const AdminLogin = () => {
     }
 
     try {
-      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const apiUrl = process.env.REACT_APP_API_URL || 'https://delivery-api-zdnu.onrender.com';
       const response = await fetch(`${apiUrl}/api/auth/login`, {
         method: 'POST',
         headers: {
@@ -146,7 +137,7 @@ const AdminLogin = () => {
               autoComplete="email"
               autoFocus
               value={email}
-              onChange={handleEmailChange}
+              onChange={(e) => setEmail(e.target.value)}
               disabled={loading}
             />
             <TextField
@@ -159,7 +150,7 @@ const AdminLogin = () => {
               id="password"
               autoComplete="current-password"
               value={password}
-              onChange={handlePasswordChange}
+              onChange={(e) => setPassword(e.target.value)}
               disabled={loading}
             />
             <Button

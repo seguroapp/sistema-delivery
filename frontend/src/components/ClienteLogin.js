@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -65,14 +65,14 @@ const ClienteLogin = ({ open, onClose, onLoginSuccess, initialTab = 0 }) => {
     setMessage('');
   };
 
-  const handleLoginChange = useCallback((field) => (event) => {
+  const handleLoginChange = (field) => (event) => {
     setLoginData(prev => ({
       ...prev,
       [field]: event.target.value
     }));
-  }, []);
+  };
 
-  const handleRegisterChange = useCallback((field) => (event) => {
+  const handleRegisterChange = (field) => (event) => {
     if (field.includes('.')) {
       const [parent, child] = field.split('.');
       setRegisterData(prev => ({
@@ -88,7 +88,7 @@ const ClienteLogin = ({ open, onClose, onLoginSuccess, initialTab = 0 }) => {
         [field]: event.target.value
       }));
     }
-  }, []);
+  };
 
   const formatarTelefone = (telefone) => {
     const apenasNumeros = telefone.replace(/\D/g, '');
