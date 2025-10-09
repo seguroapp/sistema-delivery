@@ -353,9 +353,9 @@ router.put('/profile', verificarTokenCliente, async (req, res) => {
 // Rota para obter pedidos do cliente
 router.get('/pedidos', verificarTokenCliente, (req, res) => {
   try {
-    // Importar pedidos do arquivo principal
-    const { obterPedidos } = require('../server-mock');
-    const todosPedidos = obterPedidos();
+    // Buscar pedidos do mockData
+    const mockData = require('../mockData');
+    const todosPedidos = mockData.pedidos;
     
     const cliente = encontrarClientePorId(req.clienteId);
     if (!cliente) {

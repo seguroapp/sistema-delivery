@@ -39,7 +39,7 @@ import {
   Assignment as OrdersIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { pedidosAPI, authAPI } from '../services/apiClient';
+import { pedidosAPI, authAPI } from '../services/api';
 import whatsappService from '../services/whatsappService';
 
 const AdminDashboard = () => {
@@ -128,7 +128,7 @@ const AdminDashboard = () => {
   const handleStatusChange = async () => {
     try {
       const token = localStorage.getItem('adminToken');
-      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const apiUrl = process.env.REACT_APP_API_URL || 'https://delivery-api-zdnu.onrender.com';
       const response = await fetch(`${apiUrl}/api/admin/pedidos/${selectedPedido._id}/status`, {
         method: 'PATCH',
         headers: {

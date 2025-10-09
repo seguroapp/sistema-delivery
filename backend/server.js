@@ -28,7 +28,7 @@ const app = express();
 
 // Middlewares globais
 const allowedOrigins = [
-  process.env.FRONTEND_URL || 'http://localhost:3000',
+  process.env.FRONTEND_URL || 'https://sistemadelivery.netlify.app',
   'https://sistemadelivery.netlify.app',
   'http://localhost:3000'
 ];

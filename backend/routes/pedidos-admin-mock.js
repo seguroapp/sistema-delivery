@@ -413,11 +413,11 @@ function enviarNotificacaoWhatsApp(pedido, novoStatus) {
     
     // Mensagens personalizadas por status
     const mensagens = {
-      'Confirmado': `✅ Olá ${nomeCliente}! Seu pedido #${pedido.numero} foi CONFIRMADO e já está sendo preparado!\n\n🕒 Tempo estimado: 25-35 minutos\n💰 Total: R$ ${pedido.valorTotal.toFixed(2)}\n\n📱 Acompanhe em: http://localhost:3000/acompanhar/${pedido.numero}`,
+      'Confirmado': `✅ Olá ${nomeCliente}! Seu pedido #${pedido.numero} foi CONFIRMADO e já está sendo preparado!\n\n🕒 Tempo estimado: 25-35 minutos\n💰 Total: R$ ${pedido.valorTotal.toFixed(2)}\n\n📱 Acompanhe em: https://sistemadelivery.netlify.app/acompanhar/${pedido.numero}`,
       
-      'Preparando': `👨‍🍳 ${nomeCliente}, seu pedido #${pedido.numero} está sendo PREPARADO com muito carinho!\n\n🕒 Tempo estimado: 15-25 minutos\n📱 Acompanhe: http://localhost:3000/acompanhar/${pedido.numero}`,
+      'Preparando': `👨‍🍳 ${nomeCliente}, seu pedido #${pedido.numero} está sendo PREPARADO com muito carinho!\n\n🕒 Tempo estimado: 15-25 minutos\n📱 Acompanhe: https://sistemadelivery.netlify.app/acompanhar/${pedido.numero}`,
       
-      'Saiu para Entrega': `🚚 ${nomeCliente}, seu pedido #${pedido.numero} SAIU PARA ENTREGA!\n\n🕒 Chegará em aproximadamente 10-15 minutos\n📍 Endereço: ${pedido.dadosCliente.endereco.rua}, ${pedido.dadosCliente.endereco.numero}\n📱 Acompanhe: http://localhost:3000/acompanhar/${pedido.numero}`,
+      'Saiu para Entrega': `🚚 ${nomeCliente}, seu pedido #${pedido.numero} SAIU PARA ENTREGA!\n\n🕒 Chegará em aproximadamente 10-15 minutos\n📍 Endereço: ${pedido.dadosCliente.endereco.rua}, ${pedido.dadosCliente.endereco.numero}\n📱 Acompanhe: https://sistemadelivery.netlify.app/acompanhar/${pedido.numero}`,
       
       'Entregue': `🎉 ${nomeCliente}, seu pedido #${pedido.numero} foi ENTREGUE!\n\n✨ Esperamos que tenha gostado!\n💝 Obrigado pela preferência!\n\n⭐ Avalie nosso atendimento: [link_avaliacao]`,
       

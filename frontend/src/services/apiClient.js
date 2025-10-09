@@ -1,6 +1,6 @@
 // Utilitário para requisições API com interceptors
 class ApiClient {
-  constructor(baseURL = 'http://localhost:5000/api') {
+  constructor(baseURL = 'https://delivery-api-zdnu.onrender.com/api') {
     this.baseURL = baseURL;
   }
 

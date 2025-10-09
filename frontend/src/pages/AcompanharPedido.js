@@ -65,7 +65,7 @@ const AcompanharPedido = () => {
     try {
       // Se for busca por número, usar a rota direta
       if (searchType === 'numero' || numero) {
-        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+        const apiUrl = process.env.REACT_APP_API_URL || 'https://delivery-api-zdnu.onrender.com';
         const response = await fetch(`${apiUrl}/api/tracking/${termoBusca}`);
         const data = await response.json();
 
@@ -76,7 +76,7 @@ const AcompanharPedido = () => {
         }
       } else {
         // Busca por dados do cliente
-        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+        const apiUrl = process.env.REACT_APP_API_URL || 'https://delivery-api-zdnu.onrender.com';
         const response = await fetch(`${apiUrl}/api/tracking/buscar`, {
           method: 'POST',
           headers: {
