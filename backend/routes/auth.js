@@ -41,11 +41,16 @@ const gerarToken = (id) => {
 // POST /api/auth/login - Login do admin
 router.post('/login', loginValidation, checkValidation, async (req, res) => {
   try {
+    console.log('🔍 Tentativa de login:', { email: req.body.email });
+    
     const { email, senha } = req.body;
 
     // Buscar admin por email
     const admin = await Admin.findOne({ email });
+    console.log('👤 Admin encontrado:', admin ? 'Sim' : 'Não');
+    
     if (!admin || !admin.ativo) {
+      console.log('❌ Admin não encontrado ou inativo');
       return res.status(401).json({
         success: false,
         message: 'Credenciais inválidas'
@@ -54,7 +59,10 @@ router.post('/login', loginValidation, checkValidation, async (req, res) => {
 
     // Verificar senha
     const senhaCorreta = await admin.compararSenha(senha);
+    console.log('🔑 Senha correta:', senhaCorreta ? 'Sim' : 'Não');
+    
     if (!senhaCorreta) {
+      console.log('❌ Senha incorreta');
       return res.status(401).json({
         success: false,
         message: 'Credenciais inválidas'

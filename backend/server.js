@@ -10,12 +10,45 @@ dotenv.config();
 // Conectar ao banco de dados
 connectDB();
 
+// Inicializar admin padrão (apenas em produção)
+if (process.env.NODE_ENV === 'production') {
+  const { criarAdminPadrao } = require('./criar-admin');
+  
+  // Executar após 5 segundos para garantir que o MongoDB conectou
+  setTimeout(async () => {
+    try {
+      await criarAdminPadrao();
+    } catch (error) {
+      console.log('Admin já existe ou erro na criação:', error.message);
+    }
+  }, 5000);
+}
+
 const app = express();
 
 // Middlewares globais
+const allowedOrigins = [
+  process.env.FRONTEND_URL || 'http://localhost:3000',
+  'https://sistemadelivery.netlify.app',
+  'http://localhost:3000'
+];
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-  credentials: true
+  origin: function (origin, callback) {
+    // Permitir requisições sem origin (mobile apps, Postman, etc.)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      console.log('✅ CORS permitido para:', origin);
+      callback(null, true);
+    } else {
+      console.log('❌ CORS bloqueado para:', origin);
+      callback(new Error('CORS não permitido'), false);
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(express.json({ limit: '10mb' }));
@@ -29,6 +62,16 @@ app.get('/api/health', (req, res) => {
     message: 'API funcionando corretamente',
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || 'development'
+  });
+});
+
+// Teste de conectividade para debug
+app.get('/api/test', (req, res) => {
+  res.json({ 
+    message: 'Conexão OK',
+    cors: 'Funcionando',
+    database: 'Conectado',
+    frontend_url: process.env.FRONTEND_URL
   });
 });
 
