@@ -1,12 +1,19 @@
 [build]
-  publish = "build"
-  command = "npm run build"
+  base = "frontend"
+  publish = "frontend/build"
+  command = "cd frontend && npm ci && npm run build"
 
 [build.environment]
   NODE_VERSION = "18"
   CI = "false"
+  GENERATE_SOURCEMAP = "false"
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+
+[context.production.environment]
+  REACT_APP_API_URL = "https://delivery-api-zdnu.onrender.com"
+  REACT_APP_WHATSAPP_NUMBER = "5531983218662"
+  REACT_APP_EMPRESA_NOME = "Sistema Delivery"
