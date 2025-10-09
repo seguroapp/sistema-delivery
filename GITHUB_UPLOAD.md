@@ -32,7 +32,7 @@ git config user.email "seu@email.com"
 git commit -m "Sistema delivery completo com autenticação e WhatsApp"
 
 # Conectar com GitHub (substitua SEU-USUARIO):
-git remote add origin https://github.com/SEU-USUARIO/sistema-delivery.git
+git remote add origin https://github.com/seguroapp/sistema-delivery.git
 
 # Enviar arquivos:
 git push -u origin main
