@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -65,30 +65,30 @@ const ClienteLogin = ({ open, onClose, onLoginSuccess, initialTab = 0 }) => {
     setMessage('');
   };
 
-  const handleLoginChange = (field) => (event) => {
-    setLoginData({
-      ...loginData,
+  const handleLoginChange = useCallback((field) => (event) => {
+    setLoginData(prev => ({
+      ...prev,
       [field]: event.target.value
-    });
-  };
+    }));
+  }, []);
 
-  const handleRegisterChange = (field) => (event) => {
+  const handleRegisterChange = useCallback((field) => (event) => {
     if (field.includes('.')) {
       const [parent, child] = field.split('.');
-      setRegisterData({
-        ...registerData,
+      setRegisterData(prev => ({
+        ...prev,
         [parent]: {
-          ...registerData[parent],
+          ...prev[parent],
           [child]: event.target.value
         }
-      });
+      }));
     } else {
-      setRegisterData({
-        ...registerData,
+      setRegisterData(prev => ({
+        ...prev,
         [field]: event.target.value
-      });
+      }));
     }
-  };
+  }, []);
 
   const formatarTelefone = (telefone) => {
     const apenasNumeros = telefone.replace(/\D/g, '');

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Container,
   Paper,
@@ -18,6 +18,15 @@ const AdminLogin = () => {
   const [password, setPassword] = useState('admin123');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // Handlers otimizados para evitar perda de foco
+  const handleEmailChange = useCallback((e) => {
+    setEmail(e.target.value);
+  }, []);
+
+  const handlePasswordChange = useCallback((e) => {
+    setPassword(e.target.value);
+  }, []);
 
   // Verificar se já está logado
   useEffect(() => {
@@ -136,7 +145,7 @@ const AdminLogin = () => {
               autoComplete="email"
               autoFocus
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleEmailChange}
               disabled={loading}
             />
             <TextField
@@ -149,7 +158,7 @@ const AdminLogin = () => {
               id="password"
               autoComplete="current-password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handlePasswordChange}
               disabled={loading}
             />
             <Button
