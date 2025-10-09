@@ -1,0 +1,1 @@
+Deploy trigger para forçar rebuild no Render - $(Get-Date)
