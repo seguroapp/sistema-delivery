@@ -98,3 +98,56 @@ git remote set-url origin https://github.com/SEU-USUARIO/sistema-delivery.git
 - [ ] Pronto para deploy!
 
 **Tempo estimado**: 5-10 minutos 🚀
+
+---
+
+# 🔧 Configurações Iniciais do Projeto
+
+Após o upload, é importante verificar algumas configurações:
+
+## **1. Variáveis de Ambiente**
+- Renomeie o arquivo `.env.example` para `.env`
+- Atualize a string de conexão do MongoDB:
+```
+MONGODB_URI=mongodb+srv://delivery-admin:<password>@delivery-cluster.xxxxx.mongodb.net/?retryWrites=true&w=majority
+```
+
+## **2. Instalações Pendentes**
+No diretório do projeto, execute:
+```bash
+npm install
+```
+
+## **3. Estrutura de Pastas**
+Verifique se a estrutura de pastas está conforme o esperado:
+```
+/backend
+  ├── src
+  │   ├── config
+  │   ├── controllers
+  │   ├── models
+  │   └── routes
+  ├── .env.example
+  ├── package.json
+  └── server.js
+/frontend
+  ├── public
+  ├── src
+  │   ├── components
+  │   ├── pages
+  │   └── styles
+  ├── .env.example
+  ├── package.json
+  └── vite.config.js
+```
+
+---
+
+## 🚀 **Pronto para Começar!**
+
+Com tudo configurado, você está pronto para iniciar o desenvolvimento e personalizar seu sistema de delivery!
+
+### **Dicas Finais**
+- Explore os arquivos e pastas para entender a estrutura do projeto
+- Consulte a documentação do [Node.js](https://nodejs.org/en/docs/) e [React](https://reactjs.org/docs/getting-started.html) se necessário
+- E o mais importante, divirta-se programando!
