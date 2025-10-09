@@ -77,7 +77,7 @@ app.get('/api/test', (req, res) => {
 
 // Rotas da API
 app.use('/api/auth', require('./routes/auth'));
-app.use('/api/cardapio', require('./routes/cardapio'));
+app.use('/api/cardapio', require('./routes/cardapio-mock'));
 app.use('/api/clientes', require('./routes/clientes'));
 app.use('/api/pedidos', require('./routes/pedidos'));
 
