@@ -151,4 +151,236 @@ router.post('/', (req, res) => {
   }
 });
 
+// GET /api/pedidos - Listar pedidos (admin)
+router.get('/', (req, res) => {
+  try {
+    const { limit, sortBy = 'dataHoraPedido', sortOrder = 'desc' } = req.query;
+    
+    let pedidos = [...mockData.pedidos];
+    
+    // Ordenar
+    pedidos.sort((a, b) => {
+      if (sortOrder === 'desc') {
+        return new Date(b[sortBy]) - new Date(a[sortBy]);
+      }
+      return new Date(a[sortBy]) - new Date(b[sortBy]);
+    });
+    
+    // Limitar
+    if (limit) {
+      pedidos = pedidos.slice(0, parseInt(limit));
+    }
+    
+    res.json({
+      success: true,
+      data: pedidos
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Erro ao listar pedidos',
+      error: error.message
+    });
+  }
+});
+
+// GET /api/pedidos/pendentes - Listar pedidos pendentes (admin)
+router.get('/pendentes', (req, res) => {
+  try {
+    const pedidosPendentes = mockData.pedidos.filter(p => 
+      ['Pendente', 'Confirmado', 'Preparando', 'Pronto', 'Saiu para Entrega'].includes(p.status)
+    );
+    
+    res.json({
+      success: true,
+      data: pedidosPendentes
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Erro ao listar pedidos pendentes',
+      error: error.message
+    });
+  }
+});
+
+// GET /api/pedidos/stats/dashboard - Estatísticas para dashboard (admin)
+router.get('/stats/dashboard', (req, res) => {
+  try {
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+    
+    const pedidosHoje = mockData.pedidos.filter(p => {
+      const dataPedido = new Date(p.dataHoraPedido);
+      dataPedido.setHours(0, 0, 0, 0);
+      return dataPedido.getTime() === hoje.getTime();
+    });
+    
+    const pedidosPendentes = mockData.pedidos.filter(p => 
+      ['Pendente', 'Confirmado', 'Preparando', 'Pronto', 'Saiu para Entrega'].includes(p.status)
+    );
+    
+    const faturamentoHoje = pedidosHoje
+      .filter(p => p.status !== 'Cancelado')
+      .reduce((total, p) => total + p.valorTotal, 0);
+    
+    const totalPedidos = mockData.pedidos.length;
+    
+    // Itens mais vendidos
+    const itensVendidos = {};
+    mockData.pedidos.forEach(pedido => {
+      if (pedido.status !== 'Cancelado') {
+        pedido.itens.forEach(item => {
+          if (!itensVendidos[item.nome]) {
+            itensVendidos[item.nome] = 0;
+          }
+          itensVendidos[item.nome] += item.quantidade;
+        });
+      }
+    });
+    
+    const itensMaisVendidos = Object.entries(itensVendidos)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([nome, quantidade]) => ({ nome, quantidade }));
+    
+    res.json({
+      success: true,
+      data: {
+        pedidosHoje: pedidosHoje.length,
+        faturamentoHoje,
+        pedidosPendentes: pedidosPendentes.length,
+        totalPedidos,
+        itensMaisVendidos
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Erro ao obter estatísticas',
+      error: error.message
+    });
+  }
+});
+
+// GET /api/pedidos/:id - Buscar pedido por ID
+router.get('/:id', (req, res) => {
+  try {
+    const pedido = mockData.pedidos.find(p => p._id === req.params.id);
+    
+    if (!pedido) {
+      return res.status(404).json({
+        success: false,
+        message: 'Pedido não encontrado'
+      });
+    }
+    
+    res.json({
+      success: true,
+      data: pedido
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Erro ao buscar pedido',
+      error: error.message
+    });
+  }
+});
+
+// GET /api/pedidos/numero/:numero - Buscar pedido por número
+router.get('/numero/:numero', (req, res) => {
+  try {
+    const pedido = mockData.pedidos.find(p => p.numero === req.params.numero);
+    
+    if (!pedido) {
+      return res.status(404).json({
+        success: false,
+        message: 'Pedido não encontrado'
+      });
+    }
+    
+    res.json({
+      success: true,
+      data: pedido
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Erro ao buscar pedido',
+      error: error.message
+    });
+  }
+});
+
+// PATCH /api/pedidos/:id/status - Atualizar status do pedido (admin)
+router.patch('/:id/status', (req, res) => {
+  try {
+    const { status, observacao } = req.body;
+    const pedidoIndex = mockData.pedidos.findIndex(p => p._id === req.params.id);
+    
+    if (pedidoIndex === -1) {
+      return res.status(404).json({
+        success: false,
+        message: 'Pedido não encontrado'
+      });
+    }
+    
+    const pedido = mockData.pedidos[pedidoIndex];
+    pedido.status = status;
+    
+    // Adicionar ao histórico
+    pedido.historico.push({
+      status,
+      dataHora: new Date(),
+      observacao: observacao || ''
+    });
+    
+    res.json({
+      success: true,
+      message: 'Status atualizado com sucesso',
+      data: pedido
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Erro ao atualizar status',
+      error: error.message
+    });
+  }
+});
+
+// POST /api/pedidos/:id/whatsapp - Reenviar WhatsApp (admin)
+router.post('/:id/whatsapp', (req, res) => {
+  try {
+    const pedido = mockData.pedidos.find(p => p._id === req.params.id);
+    
+    if (!pedido) {
+      return res.status(404).json({
+        success: false,
+        message: 'Pedido não encontrado'
+      });
+    }
+    
+    // Gerar nova URL do WhatsApp
+    const numeroWhatsApp = process.env.WHATSAPP_NUMBER || '5531983218662';
+    const mensagem = gerarMensagemWhatsApp(pedido);
+    const urlWhatsApp = `https://api.whatsapp.com/send?phone=${numeroWhatsApp}&text=${mensagem}`;
+    
+    res.json({
+      success: true,
+      message: 'Link do WhatsApp gerado com sucesso',
+      data: {
+        whatsappUrl: urlWhatsApp
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Erro ao gerar link do WhatsApp',
+      error: error.message
+    });
+  }
+});
+
 module.exports = router;
